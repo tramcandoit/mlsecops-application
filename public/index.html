@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>MLSecOps Application - Home</title>
+  <link rel="stylesheet" href="styles.css" />
+
+  <style>
+    /* HEADER */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #1f2937;
+      padding: 12px 22px;
+      border-radius: 0 0 10px 10px;
+    }
+    .navbar h1 {
+      color: white;
+      font-size: 20px;
+      margin: 0;
+    }
+    .nav-links {
+      display: flex;
+      gap: 18px;
+    }
+    .nav-links a {
+      color: #e5e7eb;
+      text-decoration: none;
+      font-size: 15px;
+      padding: 6px 10px;
+    }
+    .nav-links a:hover {
+      color: white;
+      background: #374151;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ====================== NAVIGATION BAR ====================== -->
+  <div class="navbar">
+    <h1>MLSecOps App</h1>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="register.html">Register</a>
+      <a href="status.html">Status</a>
+      <a href="admin-login.html">Admin</a>
+    </div>
+  </div>
+
+  <!-- ======================== MAIN CONTENT ======================== -->
+  <div class="container">
+    <h2>Welcome to MLSecOps Registration System</h2>
+    <p>Chọn chức năng phù hợp bên dưới:</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>Đăng ký tài khoản</h3>
+        <p>Người dùng tạo đơn đăng ký mới.</p>
+        <button onclick="location.href='register.html'">Đi tới trang đăng ký</button>
+      </div>
+
+      <div class="card">
+        <h3>Xem trạng thái đơn đăng ký</h3>
+        <p>Theo dõi đơn đăng ký gần nhất.</p>
+        <button onclick="location.href='status.html'">Xem trạng thái</button>
+      </div>
+
+      <div class="card">
+        <h3>Admin</h3>
+        <p>Đăng nhập để xem tất cả dữ liệu whitelist / fraud.</p>
+        <button onclick="location.href='admin-login.html'">Đăng nhập Admin</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

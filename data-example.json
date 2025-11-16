@@ -1,0 +1,104 @@
+{
+  "ID": {
+    "S": "1"
+  },
+  "bank_branch_count_8w": {
+    "N": "1"
+  },
+  "bank_months_count": {
+    "N": "24"
+  },
+  "credit_risk_score": {
+    "N": "0.42"
+  },
+  "current_address_months_count": {
+    "N": "12"
+  },
+  "customer_age": {
+    "N": "29"
+  },
+  "date_of_birth_distinct_emails_4w": {
+    "N": "0"
+  },
+  "days_since_request": {
+    "N": "0"
+  },
+  "device_distinct_emails_8w": {
+    "N": "2"
+  },
+  "device_fraud_count": {
+    "N": "0"
+  },
+  "device_os": {
+    "S": "android"
+  },
+  "email_is_free": {
+    "BOOL": true
+  },
+  "employment_status": {
+    "S": "full_time"
+  },
+  "event_timestamp": {
+    "S": "2025-11-16T17:00:00Z"
+  },
+  "foreign_request": {
+    "BOOL": false
+  },
+  "fraud_bool": {
+    "N": "0"
+  },
+  "has_other_cards": {
+    "BOOL": true
+  },
+  "housing_status": {
+    "S": "rent"
+  },
+  "income": {
+    "N": "52000"
+  },
+  "intended_balcon_amount": {
+    "N": "3500"
+  },
+  "keep_alive_session": {
+    "BOOL": false
+  },
+  "month": {
+    "N": "11"
+  },
+  "name_email_similarity": {
+    "N": "0.18"
+  },
+  "payment_type": {
+    "S": "credit"
+  },
+  "phone_home_valid": {
+    "BOOL": false
+  },
+  "phone_mobile_valid": {
+    "BOOL": true
+  },
+  "prev_address_months_count": {
+    "N": "36"
+  },
+  "proposed_credit_limit": {
+    "N": "8000"
+  },
+  "session_length_in_minutes": {
+    "N": "16"
+  },
+  "source": {
+    "S": "mobile"
+  },
+  "velocity_24h": {
+    "N": "2"
+  },
+  "velocity_4w": {
+    "N": "7"
+  },
+  "velocity_6h": {
+    "N": "1"
+  },
+  "zip_count_4w": {
+    "N": "3"
+  }
+}

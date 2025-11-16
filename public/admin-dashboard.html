@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+  <!-- NAVIGATION -->
+  <div class="navbar">
+    <h1 class="navbar-title">MLSecOps Admin</h1>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="admin-login.html">Logout</a>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <h2>Admin Dashboard — Full Dataset</h2>
+
+    <div class="toolbar">
+      <input type="text" id="searchBox" class="search-input" placeholder="Tìm theo ID / Email / Phone...">
+      <button onclick="exportCSV()" class="primary-btn">Export CSV</button>
+    </div>
+
+    <div class="table-wrapper">
+      <table id="dataTable">
+        <thead id="thead"></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <script>
+    let allData = [];
+
+    async function loadData() {
+      const res = await fetch("/admin/users-data");
+      const data = await res.json();
+
+      allData = data.items || [];
+      renderTable(allData);
+    }
+
+    function renderTable(data) {
+      const thead = document.getElementById("thead");
+      const tbody = document.getElementById("tbody");
+
+      tbody.innerHTML = "";
+      thead.innerHTML = "";
+
+      if (data.length === 0) return;
+
+      const columns = Object.keys(data[0]);
+
+      // Header
+      let header = "<tr>";
+      columns.forEach(col => {
+        header += `<th>${col}</th>`;
+      });
+      header += "</tr>";
+      thead.innerHTML = header;
+
+      // Rows
+      data.forEach(row => {
+        let tr = `<tr class="${row.fraud_bool === 1 ? "fraud-row" : ""}">`;
+        columns.forEach(c => tr += `<td>${row[c] ?? ""}</td>`);
+        tr += "</tr>";
+        tbody.innerHTML += tr;
+      });
+    }
+
+    // search
+    document.getElementById("searchBox").addEventListener("input", () => {
+      const k = searchBox.value.toLowerCase();
+
+      const filtered = allData.filter(x =>
+        (x.ID && x.ID.toLowerCase().includes(k)) ||
+        (x.user_email && x.user_email.toLowerCase().includes(k)) ||
+        (x.user_phone && x.user_phone.toLowerCase().includes(k))
+      );
+
+      renderTable(filtered);
+    });
+
+    // export CSV
+    function exportCSV() {
+      const cols = Object.keys(allData[0] || {});
+      let csv = cols.join(",") + "\n";
+
+      allData.forEach(row => {
+        const rowStr = cols.map(c => JSON.stringify(row[c] ?? "")).join(",");
+        csv += rowStr + "\n";
+      });
+
+      const blob = new Blob([csv], { type: "text/csv" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "fraud_dataset.csv";
+      a.click();
+    }
+
+    loadData();
+  </script>
+
+</body>
+</html>

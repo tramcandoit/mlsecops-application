@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Login</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Admin Login</h1>
+
+    <form id="adminLoginForm" class="form-card">
+      <div class="form-group">
+        <label for="username">Tài khoản</label>
+        <input type="text" id="username" required />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Mật khẩu</label>
+        <input type="password" id="password" required />
+      </div>
+
+      <button type="submit">Đăng nhập</button>
+      <p id="loginMessage" class="message"></p>
+    </form>
+
+    <button class="link-button" onclick="location.href='index.html'">⬅ Quay lại Home</button>
+  </div>
+
+  <script>
+    const form = document.getElementById("adminLoginForm");
+    const msg = document.getElementById("loginMessage");
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      // DEMO: hard-code admin
+      if (username === "admin" && password === "admin123") {
+        localStorage.setItem("adminLoggedIn", "true");
+        window.location.href = "admin-dashboard.html";
+      } else {
+        msg.textContent = "Sai tài khoản hoặc mật khẩu (demo: admin / admin123)";
+        msg.classList.add("error");
+      }
+    });
+  </script>
+</body>
+</html>

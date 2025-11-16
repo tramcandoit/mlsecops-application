@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Trạng thái đơn đăng ký</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Trạng thái đơn đăng ký</h1>
+    <div id="statusBox" class="card"></div>
+
+    <button class="link-button" onclick="location.href='index.html'">⬅ Quay lại Home</button>
+  </div>
+
+  <script>
+    const statusBox = document.getElementById("statusBox");
+    const lastId = localStorage.getItem("lastRegistrationId");
+
+    if (!lastId) {
+      statusBox.innerHTML = `
+        <p>Bạn chưa có đơn đăng ký nào hoặc chưa gửi đơn từ thiết bị này.</p>
+      `;
+    } else {
+      statusBox.innerHTML = `
+        <p>Đơn đăng ký gần nhất của bạn đã được ghi nhận.</p>
+        <p><strong>Mã đơn:</strong> ${lastId}</p>
+        <p>Admin sẽ xem xét và xử lý (fraud_bool do hệ thống AI nội bộ đánh giá).</p>
+      `;
+    }
+  </script>
+</body>
+</html>

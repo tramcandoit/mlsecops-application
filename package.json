@@ -1,0 +1,17 @@
+{
+  "name": "mlsecops-client-app",
+  "version": "1.0.0",
+  "description": "Client application for register bank account",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.932.0",
+    "@aws-sdk/lib-dynamodb": "^3.932.0",
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "uuid": "^13.0.0"
+  }
+}

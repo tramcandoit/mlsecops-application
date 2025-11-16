@@ -1,0 +1,245 @@
+/* ===========================
+   GLOBAL PAGE STYLES
+=========================== */
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #f4f4f7;
+  margin: 0;
+  padding: 0;
+  color: #111827;
+}
+
+h1, h2, h3 {
+  margin-top: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ===========================
+   NAVIGATION BAR
+=========================== */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1f2937;
+  padding: 12px 22px;
+  color: white;
+}
+
+.nav-links {
+  display: flex;
+  gap: 18px;
+}
+
+.nav-links a {
+  color: #d1d5db;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+.nav-links a:hover,
+.nav-links .active {
+  background: #374151;
+  color: #fff;
+}
+
+/* ===========================
+   PAGE CONTAINER
+=========================== */
+.container {
+  max-width: 960px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 24px 28px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+}
+
+.form-container {
+  max-width: 560px;
+  margin: 30px auto;
+  background: #fff;
+  padding: 28px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.form-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* ===========================
+   CARDS (TRANG HOME)
+=========================== */
+.card-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.card {
+  border-radius: 10px;
+  padding: 16px 18px;
+  background: #fafafa;
+  border: 1px solid #ddd;
+}
+
+.card h2 {
+  margin-top: 0;
+}
+
+/* ===========================
+   BUTTONS
+=========================== */
+button,
+.primary-btn {
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background: #2563eb;
+  color: white;
+  font-size: 14px;
+  transition: 0.15s;
+}
+
+button:hover,
+.primary-btn:hover {
+  background: #1d4ed8;
+}
+
+.link-button {
+  margin-top: 16px;
+  background: #6b7280;
+}
+
+.link-button:hover {
+  background: #4b5563;
+}
+
+/* ===========================
+   FORM FIELDS
+=========================== */
+.form-card {
+  margin-top: 16px;
+  padding: 16px 18px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background: #fafafa;
+}
+
+.form-group {
+  margin-bottom: 14px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+/* ===========================
+   MESSAGES
+=========================== */
+.message {
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+.message.error {
+  color: #dc2626;
+}
+
+.message.success {
+  color: #16a34a;
+}
+
+/* ===========================
+   TABLE + ADMIN DASHBOARD
+=========================== */
+.table-wrapper {
+  margin-top: 16px;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+th, td {
+  border: 1px solid #e5e7eb;
+  padding: 6px 8px;
+  text-align: left;
+}
+
+th {
+  background: #f3f4f6;
+  font-weight: 600;
+}
+
+tr:nth-child(even) {
+  background: #f9fafb;
+}
+
+/* highlight fraud rows */
+.fraud-row {
+  background: #fee2e2 !important;
+}
+
+/* ===========================
+   SEARCH BAR + TOOLBAR
+=========================== */
+.toolbar {
+  margin-bottom: 14px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.search-input {
+  padding: 8px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  width: 260px;
+  font-size: 14px;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+@media (max-width: 640px) {
+  .container, .form-container {
+    margin: 20px;
+    padding: 18px;
+  }
+
+  .nav-links {
+    gap: 10px;
+  }
+
+  table {
+    font-size: 13px;
+  }
+
+  .search-input {
+    width: 100%;
+  }
+}
