@@ -2,32 +2,101 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Trạng thái đơn đăng ký</title>
+  <title>Registration Status</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div class="container">
-    <h1>Trạng thái đơn đăng ký</h1>
+    <h1>Registration Status</h1>
     <div id="statusBox" class="card"></div>
 
-    <button class="link-button" onclick="location.href='index.html'">⬅ Quay lại Home</button>
+    <button class="link-button" onclick="location.href='index.html'">⬅ Back to Home</button>
   </div>
+
+  <script>
+    // Add navbar dynamically
+    const navbar = document.createElement('div');
+    navbar.className = 'navbar';
+    navbar.innerHTML = `
+      <h1>MLSecOps App</h1>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="register.html">Register</a>
+        <a href="status.html" class="active">Status</a>
+        <a href="admin-login.html">Admin</a>
+      </div>
+    `;
+    document.body.insertBefore(navbar, document.body.firstChild);
+  </script>
 
   <script>
     const statusBox = document.getElementById("statusBox");
     const lastId = localStorage.getItem("lastRegistrationId");
 
-    if (!lastId) {
-      statusBox.innerHTML = `
-        <p>Bạn chưa có đơn đăng ký nào hoặc chưa gửi đơn từ thiết bị này.</p>
-      `;
-    } else {
-      statusBox.innerHTML = `
-        <p>Đơn đăng ký gần nhất của bạn đã được ghi nhận.</p>
-        <p><strong>Mã đơn:</strong> ${lastId}</p>
-        <p>Admin sẽ xem xét và xử lý (fraud_bool do hệ thống AI nội bộ đánh giá).</p>
-      `;
+    async function loadStatus() {
+      if (!lastId) {
+        statusBox.innerHTML = `
+          <p>You have no registration requests or have not submitted any from this device.</p>
+        `;
+        return;
+      }
+
+      try {
+        const res = await fetch(`/register/${lastId}`);
+        const data = await res.json();
+
+        if (data.success) {
+          const item = data.item;
+          const statusHistory = item.status_history || [];
+
+          let html = `<p><strong>Request ID:</strong> ${lastId}</p>`;
+
+          // Display status history in reverse chronological order (newest first)
+          [...statusHistory].reverse().forEach(status => {
+            const date = new Date(status.timestamp).toLocaleString();
+            let bgColor, title, message;
+
+            if (status.status === 'suspected_fraud') {
+              bgColor = 'lightyellow';
+              title = 'Under Review';
+              message = 'You are currently under suspicion. Please wait for the system to confirm.';
+            } else if (status.status === 'confirmed_fraud') {
+              bgColor = '#ffcccc';
+              title = 'Fraud Detected';
+              message = 'Your account has been flagged as fraudulent. Please contact mlsecops@lastdanceuit.io.vn if you have questions.';
+            } else if (status.status === 'confirmed_safe') {
+              bgColor = 'lightgreen';
+              title = 'Registration Successful!';
+              message = 'Your account has been approved.';
+            } else {
+              bgColor = 'lightgreen';
+              title = 'Registration Successful!';
+              message = 'Your account has been approved.';
+            }
+
+            html += `
+              <div style="background-color: ${bgColor}; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                <p><strong>${title}</strong></p>
+                <p>${message}</p>
+                <p style="font-size: 12px; color: #666;">Updated: ${date}</p>
+              </div>
+            `;
+          });
+
+          statusBox.innerHTML = html;
+        } else {
+          statusBox.innerHTML = `
+            <p>Request not found.</p>
+          `;
+        }
+      } catch (err) {
+        statusBox.innerHTML = `
+          <p>Error loading status.</p>
+        `;
+      }
     }
+
+    loadStatus();
   </script>
 </body>
 </html>
