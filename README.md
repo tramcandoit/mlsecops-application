@@ -10,7 +10,7 @@
    pip install -r requirements.txt
    ```
 
-2. Setup preprocessor (if there is no src/fit_preprocessor.py):
+2. Setup preprocessor (if there is no preprocessor.pkl):
    ```bash
    # Place Base.csv in root directory
    python3 src/fit_preprocessor.py
