@@ -7,7 +7,7 @@ import requests
 import os
 
 # MLflow API URL
-MLFLOW_API_URL = "http://localhost:5000/predict"
+MLFLOW_API_URL = "https://mlflow.lastdanceuit.io.vn/invocations"
 
 # Path to fitted preprocessor
 PREPROCESSOR_PATH = os.path.join(os.path.dirname(__file__), 'preprocessor.pkl')
