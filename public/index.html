@@ -4,38 +4,6 @@
   <meta charset="UTF-8" />
   <title>MLSecOps Application - Home</title>
   <link rel="stylesheet" href="styles.css" />
-
-  <style>
-    /* HEADER */
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #1f2937;
-      padding: 12px 22px;
-      border-radius: 0 0 10px 10px;
-    }
-    .navbar h1 {
-      color: white;
-      font-size: 20px;
-      margin: 0;
-    }
-    .nav-links {
-      display: flex;
-      gap: 18px;
-    }
-    .nav-links a {
-      color: #e5e7eb;
-      text-decoration: none;
-      font-size: 15px;
-      padding: 6px 10px;
-    }
-    .nav-links a:hover {
-      color: white;
-      background: #374151;
-      border-radius: 6px;
-    }
-  </style>
 </head>
 
 <body>
@@ -54,25 +22,17 @@
   <!-- ======================== MAIN CONTENT ======================== -->
   <div class="container">
     <h2>Welcome to MLSecOps Registration System</h2>
-    <p>Chọn chức năng phù hợp bên dưới:</p>
+    <p>Choose the appropriate function below:</p>
 
     <div class="card-grid">
-      <div class="card">
-        <h3>Đăng ký tài khoản</h3>
-        <p>Người dùng tạo đơn đăng ký mới.</p>
-        <button onclick="location.href='register.html'">Đi tới trang đăng ký</button>
+      <div class="card" onclick="location.href='register.html'">
+        <h3>Register Account</h3>
+        <p>Users create a new registration request.</p>
       </div>
 
-      <div class="card">
-        <h3>Xem trạng thái đơn đăng ký</h3>
-        <p>Theo dõi đơn đăng ký gần nhất.</p>
-        <button onclick="location.href='status.html'">Xem trạng thái</button>
-      </div>
-
-      <div class="card">
-        <h3>Admin</h3>
-        <p>Đăng nhập để xem tất cả dữ liệu whitelist / fraud.</p>
-        <button onclick="location.href='admin-login.html'">Đăng nhập Admin</button>
+      <div class="card" onclick="location.href='status.html'">
+        <h3>View Registration Status</h3>
+        <p>Track the latest registration request.</p>
       </div>
     </div>
   </div>

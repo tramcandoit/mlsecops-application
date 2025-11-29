@@ -4,13 +4,44 @@
   <meta charset="UTF-8" />
   <title>Admin Dashboard</title>
   <link rel="stylesheet" href="styles.css" />
+
+  <style>
+    /* TABS */
+    .tabs {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    .tab-button {
+      padding: 10px 20px;
+      border: none;
+      background: #f0f0f0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .tab-button.active {
+      background: #007bff;
+      color: white;
+    }
+    .tab-content {
+      transition: opacity 0.3s ease;
+    }
+    .tab-content.active {
+      display: block;
+      opacity: 1;
+    }
+    .tab-content {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+  </style>
 </head>
 
 <body>
 
   <!-- NAVIGATION -->
-  <div class="navbar">
-    <h1 class="navbar-title">MLSecOps Admin</h1>
+  <div class="navbar" style="padding: 10px 20px; border-radius: 0 0 10px 10px;">
+    <h1 class="navbar-title" style="font-size: 18px;">MLSecOps App</h1>
     <div class="nav-links">
       <a href="index.html">Home</a>
       <a href="admin-login.html">Logout</a>
@@ -19,36 +50,93 @@
 
   <div class="container">
 
-    <h2>Admin Dashboard — Full Dataset</h2>
+    <h2>Admin Dashboard</h2>
 
-    <div class="toolbar">
-      <input type="text" id="searchBox" class="search-input" placeholder="Tìm theo ID / Email / Phone...">
-      <button onclick="exportCSV()" class="primary-btn">Export CSV</button>
+    <div class="tabs">
+      <button class="tab-button active" onclick="showTab('waiting')">Suspected Fraud</button>
+      <button class="tab-button" onclick="showTab('nonfraud')">Non-fraud</button>
+      <button class="tab-button" onclick="showTab('full')">All</button>
     </div>
 
-    <div class="table-wrapper">
-      <table id="dataTable">
-        <thead id="thead"></thead>
-        <tbody id="tbody"></tbody>
-      </table>
+    <div id="waiting-tab" class="tab-content active">
+      <div class="toolbar">
+        <button onclick="exportCSV('waiting')" class="primary-btn">Export CSV</button>
+      </div>
+
+      <div class="table-wrapper">
+        <table id="waitingTable">
+          <thead id="waitingThead"></thead>
+          <tbody id="waitingTbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="nonfraud-tab" class="tab-content" style="display: none;">
+      <div class="toolbar">
+        <button onclick="exportCSV('nonfraud')" class="primary-btn">Export CSV</button>
+      </div>
+
+      <div class="table-wrapper">
+        <table id="nonfraudTable">
+          <thead id="nonfraudThead"></thead>
+          <tbody id="nonfraudTbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="full-tab" class="tab-content" style="display: none;">
+      <div class="toolbar">
+        <input type="text" id="searchBox" class="search-input" placeholder="Search by ID">
+        <button onclick="exportCSV('full')" class="primary-btn">Export CSV</button>
+      </div>
+
+      <div class="table-wrapper">
+        <table id="fullTable">
+          <thead id="fullThead"></thead>
+          <tbody id="fullTbody"></tbody>
+        </table>
+      </div>
     </div>
 
   </div>
 
   <script>
     let allData = [];
+    let waitingData = [];
+    let nonfraudData = [];
+
+    function showTab(tab) {
+      document.querySelectorAll('.tab-content').forEach(el => {
+        el.style.display = 'none';
+        el.classList.remove('active');
+      });
+      document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+      const activeTab = document.getElementById(tab + '-tab');
+      activeTab.style.display = 'block';
+      setTimeout(() => activeTab.classList.add('active'), 10); // small delay for transition
+      event.target.classList.add('active');
+    }
 
     async function loadData() {
       const res = await fetch("/admin/users-data");
       const data = await res.json();
-
       allData = data.items || [];
-      renderTable(allData);
+      renderTable('full', allData);
+
+      const res2 = await fetch("/admin/waiting-data");
+      const data2 = await res2.json();
+      waitingData = data2.items || [];
+      renderTable('waiting', waitingData);
+
+      const res3 = await fetch("/admin/non-fraud-data");
+      const data3 = await res3.json();
+      nonfraudData = data3.items || [];
+      renderTable('nonfraud', nonfraudData);
     }
 
-    function renderTable(data) {
-      const thead = document.getElementById("thead");
-      const tbody = document.getElementById("tbody");
+    function renderTable(type, data) {
+      const thead = document.getElementById(type + "Thead");
+      const tbody = document.getElementById(type + "Tbody");
 
       tbody.innerHTML = "";
       thead.innerHTML = "";
@@ -62,6 +150,9 @@
       columns.forEach(col => {
         header += `<th>${col}</th>`;
       });
+      if (type === 'waiting') {
+        header += "<th>Action</th>";
+      }
       header += "</tr>";
       thead.innerHTML = header;
 
@@ -69,30 +160,43 @@
       data.forEach(row => {
         let tr = `<tr class="${row.fraud_bool === 1 ? "fraud-row" : ""}">`;
         columns.forEach(c => tr += `<td>${row[c] ?? ""}</td>`);
+        if (type === 'waiting') {
+          tr += `<td><button onclick="confirmFraud('${row.ID}', 0)">Confirm</button></td>`;
+        }
         tr += "</tr>";
         tbody.innerHTML += tr;
       });
     }
 
-    // search
+    // search for full
     document.getElementById("searchBox").addEventListener("input", () => {
-      const k = searchBox.value.toLowerCase();
-
+      const k = document.getElementById("searchBox").value.toLowerCase();
       const filtered = allData.filter(x =>
         (x.ID && x.ID.toLowerCase().includes(k)) ||
-        (x.user_email && x.user_email.toLowerCase().includes(k)) ||
-        (x.user_phone && x.user_phone.toLowerCase().includes(k))
+        (x.email && x.email.toLowerCase().includes(k)) ||
+        (x.phone && x.phone.toLowerCase().includes(k))
       );
-
-      renderTable(filtered);
+      renderTable('full', filtered);
     });
 
     // export CSV
-    function exportCSV() {
-      const cols = Object.keys(allData[0] || {});
+    function exportCSV(type) {
+      let data;
+      let filename;
+      if (type === 'full') {
+        data = allData;
+        filename = "all_dataset.csv";
+      } else if (type === 'waiting') {
+        data = waitingData;
+        filename = "suspected_fraud.csv";
+      } else if (type === 'nonfraud') {
+        data = nonfraudData;
+        filename = "non_fraud.csv";
+      }
+      const cols = Object.keys(data[0] || {});
       let csv = cols.join(",") + "\n";
 
-      allData.forEach(row => {
+      data.forEach(row => {
         const rowStr = cols.map(c => JSON.stringify(row[c] ?? "")).join(",");
         csv += rowStr + "\n";
       });
@@ -100,8 +204,31 @@
       const blob = new Blob([csv], { type: "text/csv" });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
-      a.download = "fraud_dataset.csv";
+      a.download = filename;
       a.click();
+    }
+
+    // confirm fraud
+    async function confirmFraud(id, defaultVal) {
+      const newFraud = prompt("Enter new fraud_bool (0 or 1):", defaultVal.toString());
+      if (newFraud === "0" || newFraud === "1") {
+        try {
+          const res = await fetch(`/admin/update-fraud/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ fraud_bool: parseInt(newFraud) })
+          });
+          const data = await res.json();
+          if (data.success) {
+            alert("Updated successfully");
+            loadData(); // reload
+          } else {
+            alert("Update failed");
+          }
+        } catch (err) {
+          alert("Error updating");
+        }
+      }
     }
 
     loadData();
